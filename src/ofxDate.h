@@ -1,34 +1,42 @@
 #ifndef OFXDATE_H
 #define OFXDATE_H
 
+#include "ofUtils.h"
+
 
 class ofxDate
 {
     public:
         ofxDate();
+        ofxDate(long days);
         ofxDate(int year, int month, int day);
         virtual ~ofxDate();
         unsigned int getDay() { return m_day; }
-        void setDay(unsigned int day) { m_day = day; }
+        void setDay(unsigned int day) { m_day = day;calcDaysPast();}
         unsigned int getMonth() { return m_month; }
-        void setMonth(unsigned int month) { m_month = month; }
+        void setMonth(unsigned int month) { m_month = month;calcDaysPast(); }
         unsigned int getYear() { return m_year; }
-        void setYear(unsigned int year) { m_year = year; }
-        bool isLeapyear()
+        void setYear(unsigned int year) { m_year = year; calcDaysPast();}
+        void checkDate();
+        bool isLeapyear(int year)
         {
-            if(m_year<1) {
-		// ofLogError() << "isLeapyear of " << m_year;
-		return false;
+            if(year<1) {
+                ofLogError() << "isLeapyear of " << year;
+                return false;
             }
-	    if(m_year%4) return false;
-            if(m_year<=1582) return true;
-            if(m_year%100) return true;
-            if(m_year%400) return false;
+            if(year%4) return false;
+            if(year<=1582) return true;
+            if(year%100) return true;
+            if(year%400) return false;
             return true;
         }
-        int daysPerMonth()
+        bool isLeapyear()
         {
-            switch(m_month) {
+            return isLeapyear(m_year);
+        }
+        int daysPerMonth(int month)
+        {
+            switch(month) {
                 case 1:
                 case 3:
                 case 5:
@@ -44,19 +52,58 @@ class ofxDate
                     return 30;
                 case 2: return (28 + isLeapyear());
                 default:
-		  // ofLogError() << "daysPerMonth";
+            ofLogError() << "daysPerMonth";
 			return -1;
             }
         }
-        int getCalendarWeek() const
+        int daysPerMonth()
         {
-            // ...
+            return daysPerMonth(m_month);
         }
+        int getCalendarWeek()
+        {
+            char timebuf[64];
+            time_t rawtime;
+            struct tm * timeinfo;
+            time ( &rawtime );
+            timeinfo = localtime ( &rawtime );
+            timeinfo->tm_year = m_year;
+            timeinfo->tm_mon = m_month;
+            timeinfo->tm_mday = m_day;
+            mktime(timeinfo);
+
+            if (strftime(timebuf, sizeof(timebuf), "%W", timeinfo) != 0) {
+                return ofToInt(std::string(timebuf));
+            }
+
+        }
+        int getWeekday()
+        {
+            time_t rawtime;
+            struct tm * timeinfo;
+            time ( &rawtime );
+            timeinfo = localtime ( &rawtime );
+            timeinfo->tm_year = m_year;
+            timeinfo->tm_mon = m_month;
+            timeinfo->tm_mday = m_day;
+            mktime(timeinfo);
+            return timeinfo->tm_wday;
+        }
+        void inspect();
+        ofxDate operator+(long days) const;
+        ofxDate operator-(long days) const;
+        long operator-(const ofxDate &d) const;
+        bool operator<(const ofxDate &d) const;
+        bool operator==(const ofxDate &d) const;
+
     protected:
     private:
+        void calcDate();
+        void calcDaysPast();
         unsigned int m_day;
         unsigned int m_month;
         unsigned int m_year;
+        unsigned int m_daysPast;
 };
 
 #endif
