@@ -21,6 +21,8 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     private:
    		ofxDate date;
-        ofxDate beginDate;
+   		int m_year;
+   		int m_month;
+   		int m_day;
 
 };

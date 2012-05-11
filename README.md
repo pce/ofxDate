@@ -20,4 +20,12 @@ example
     int calweek = date.getCalendarWeek();
     ofLogVerbose() << "date.getCalendarWeek() : " << calweek;
 
+
+addon example
+-------------
+
+![screenshot](ofxDate/raw/master/ofxDate.png)
+
+
+
  

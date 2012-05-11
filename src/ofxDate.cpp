@@ -10,10 +10,9 @@ ofxDate::ofxDate()
 
 ofxDate::ofxDate(long days) : m_daysPast(days)
 {
-    setYear(ofGetYear());
-    setMonth(ofGetMonth());
-    setDay(ofGetDay());
-    calcDaysPast();
+    if(days<0) ofLogError() << "days is not valid " << days << " ofxDate(long days)";
+    // "reversed" init for overloaded operator
+    calcDate();
 }
 
 ofxDate::ofxDate(int year, int month, int day)

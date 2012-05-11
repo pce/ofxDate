@@ -52,8 +52,8 @@ class ofxDate
                     return 30;
                 case 2: return (28 + isLeapyear());
                 default:
-            ofLogError() << "daysPerMonth";
-			return -1;
+                    // ofLogError() << "daysPerMonth";
+                    return -1;
             }
         }
         int daysPerMonth()

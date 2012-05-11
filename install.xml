@@ -1,6 +1,6 @@
 <install>
 	<name>ofxDate</name>
-	<version>0.01</version>
+	<version>0.2</version>
 	<author>Patrick Engel</author>
 	<description><![CDATA[Simple Date Class]]></description>
 	
