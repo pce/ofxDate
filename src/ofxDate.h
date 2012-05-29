@@ -2,7 +2,8 @@
 #define OFXDATE_H
 
 #include "ofUtils.h"
-
+#include <iostream>
+#include <iomanip>
 
 class ofxDate
 {
@@ -18,6 +19,15 @@ class ofxDate
         unsigned int getYear() { return m_year; }
         void setYear(unsigned int year) { m_year = year; calcDaysPast();}
         void checkDate();
+        string getIsoDate() const {
+            // YYYY-MM-DD
+            stringstream str;
+            str.fill('0');
+            str << setw(4) << m_year << "-";
+            str << setw(2) << m_month << "-";
+            str << setw(2) << m_day;
+            return str.str();
+        }
         bool isLeapyear(int year)
         {
             if(year<1) {
@@ -71,11 +81,21 @@ class ofxDate
             timeinfo->tm_mon = m_month;
             timeinfo->tm_mday = m_day;
             mktime(timeinfo);
-
             if (strftime(timebuf, sizeof(timebuf), "%W", timeinfo) != 0) {
                 return ofToInt(std::string(timebuf));
             }
-
+        }
+        int getCalendarWeeksOfYear(int year)
+        {
+            if ((ofxDate(1,1,year).getWeekday() == 3) ||
+                (ofxDate(31,12,year).getWeekday() == 3))
+                return 53;
+            else
+                return 52;
+        }
+        int getCalendarWeeksOfYear()
+        {
+            return getCalendarWeeksOfYear(m_year);
         }
         int getWeekday()
         {
@@ -93,7 +113,10 @@ class ofxDate
         ofxDate operator+(long days) const;
         ofxDate operator-(long days) const;
         long operator-(const ofxDate &d) const;
-        bool operator<(const ofxDate &d) const;
+        bool operator< (const ofxDate &d) const;
+        bool operator<= (const ofxDate &d) const;
+        bool operator> (const ofxDate &d) const;
+        bool operator>= (const ofxDate &d) const;
         bool operator==(const ofxDate &d) const;
 
     protected:

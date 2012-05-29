@@ -13,6 +13,7 @@ ofxDate::ofxDate(long days) : m_daysPast(days)
     if(days<0) ofLogError() << "days is not valid " << days << " ofxDate(long days)";
     // "reversed" init for overloaded operator
     calcDate();
+    // calcDaysPast();
 }
 
 ofxDate::ofxDate(int year, int month, int day)
@@ -80,6 +81,7 @@ void ofxDate::inspect()
     ofLogVerbose() << "month :" << m_month;
     ofLogVerbose() << "day:" << m_day;
     ofLogVerbose() << "daysPast:" << m_daysPast;
+    ofLogVerbose() << "CalendarWeek:" << getCalendarWeek();
 }
 
 
@@ -95,4 +97,22 @@ long ofxDate::operator-(const ofxDate &d) const {
   return(labs(m_daysPast-d.m_daysPast));
 }
 
+bool ofxDate::operator== (const ofxDate &d) const {
+  return(m_daysPast==d.m_daysPast);
+}
 
+bool ofxDate::operator< (const ofxDate &d) const {
+  return(m_daysPast<d.m_daysPast);
+}
+
+bool ofxDate::operator<= (const ofxDate &d) const {
+  return(m_daysPast<=d.m_daysPast);
+}
+
+bool ofxDate::operator> (const ofxDate &d) const {
+  return(m_daysPast>d.m_daysPast);
+}
+
+bool ofxDate::operator>= (const ofxDate &d) const {
+  return(m_daysPast>=d.m_daysPast);
+}
