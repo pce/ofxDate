@@ -24,7 +24,7 @@ example
 addon example
 -------------
 
-![screenshot](ofxDate/raw/master/ofxDate.png)
+![screenshot](https://raw.githubusercontent.com/pce/ofxDate/master/ofxDate.png)
 
 
 
